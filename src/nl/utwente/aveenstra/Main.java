@@ -1,11 +1,10 @@
 package nl.utwente.aveenstra;
 
-import net.java.games.input.Component;
-import net.java.games.input.Controller;
-import net.java.games.input.Event;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 /**
  * Created by Antoine on 18-7-2015.
@@ -14,10 +13,15 @@ import java.util.Arrays;
  */
 public class Main {
 
+    public static final String AUTHOR = "author";
+    public static final String CLI = "cli";
+    public static final String DIR = "dir";
+    public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR,DIR};
+    public static final String[] CONFIG_KEYS_BOOLEAN = new String[]{CLI};
 
-    private static int componentStartButton = 6;
-    private static int componentChildNotVisible = 0;
-    private static int componentStress = 1;
+    public static final String CONFIG_NODE_NAME = "JavaJoyMon";
+    public static final Preferences PREFERENCES = Preferences.userRoot().node(CONFIG_NODE_NAME);
+    public static Thread joystickThread;
 
     private static boolean running = true;
 
@@ -27,6 +31,9 @@ public class Main {
     public static Options options = new Options();
 
     static {
+        options.addOption(AUTHOR.charAt(0)+"", AUTHOR, true, "Set the name of the author of the results");
+        options.addOption(CLI.charAt(0)+"", CLI, false, "Do not open a UI, but instead start a CLI.");
+        options.addOption(DIR.charAt(0)+"", DIR, true, "Set the root directory for the results.");
         options.addOption("h", "help", false, "Prints this help message.");
     }
 
@@ -39,28 +46,46 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
         try {
             CommandLine line = parser.parse(options, args);
-            JoystickWrapper joystick = new JoystickWrapper();
-            Controller controller = joystick.getController();
-            Component[] components = controller.getComponents();
-            for (int i = 0; i < components.length; i++) {
-                Component component = components[i];
-                System.out.println(i+"\t"+component.getName());
-            }
-            for (int i = 0; i < 100; i++) {
-                controller.poll();
-                Event event = new Event();
-                while (controller.getEventQueue().getNextEvent(event)) {
-                    Component component = event.getComponent();
-                    System.out.println(component.getName()+component.getPollData());
+            if (line.hasOption('h')) {
+                printHelp();
+            } else {
+                try {
+                    System.out.println(Arrays.toString(Preferences.userRoot().node("JavaJoyMon").keys()));
+                } catch (BackingStoreException e) {
+                    e.printStackTrace();
                 }
 
-                Thread.sleep(500);
+                for (String property : CONFIG_KEYS_STRING) {
+                    if (line.hasOption(property.charAt(0))) {
+                        PREFERENCES.put(property, line.getOptionValue(property.charAt(0)));
+                    }
+                }
+                for (String property : CONFIG_KEYS_BOOLEAN) {
+                    if (line.hasOption(property.charAt(0))) {
+                        PREFERENCES.putBoolean(property, line.getOptionValue(property.charAt(0)).isEmpty());
+                    }
+                }
+
+                JoystickWrapper joystick = JoystickWrapper.getInstance();
+                joystickThread = new Thread(joystick, "Joystick Thread");
+                View view;
+                if (PREFERENCES.getBoolean(CLI, false)) {
+                    view = new ViewCLI();
+                } else {
+                    view = new ViewUI();
+                }
+                joystickThread.start();
+                view.run();
+                stopRunning();
+                joystickThread.join();
             }
         } catch (ParseException e) {
+
             System.err.println(e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (NoControllerFoundException e) {
+            // TODO error popup
             System.err.println("No joystick was found.");
         } finally {
             stopRunning();
@@ -78,5 +103,6 @@ public class Main {
 
     public static void stopRunning() {
         Main.running = false;
+        JoystickWrapper.stop();
     }
 }
