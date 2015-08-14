@@ -103,9 +103,8 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (NoControllerFoundException e) {
-            if (PREFERENCES.getBoolean(CLI, false)) {
-                System.err.println("No joystick was found.");
-            } else {
+            System.err.println("No joystick was found. Exiting application!");
+            if (!PREFERENCES.getBoolean(CLI, false)) {
                 new NoJoystickFound().run();
             }
         } finally {
