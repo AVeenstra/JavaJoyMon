@@ -63,6 +63,8 @@ public class Main {
                     }
                     System.out.print("\r");
                 });
+                joystickThread.run();
+                joystickThread.join();
             }else {
                 try {
                     System.out.println(Arrays.toString(Preferences.userRoot().node("JavaJoyMon").keys()));
