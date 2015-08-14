@@ -58,8 +58,10 @@ public class Main {
                 JoystickWrapper joystick = JoystickWrapper.getInstance();
                 joystickThread = new Thread(joystick, "Joystick Thread");
                 joystick.addObserver((o, arg) -> {
+                    int i = 0;
                     for (Component c : JoystickWrapper.getInstance().getController().getComponents()) {
-                        System.out.printf("%1.2f", c.getPollData());
+
+                        System.out.printf("%d:%1.2f  ", i++, c.getPollData());
                     }
                     System.out.print("\r");
                 });
