@@ -15,12 +15,12 @@ import java.util.function.Consumer;
 public class ComponentWrapper extends ObservableValueBase<Number> implements ObservableFloatValue {
     public static final ArrayList<ComponentWrapper> buttons = new ArrayList<>();
     public static final ArrayList<ComponentWrapper> axes = new ArrayList<>();
-    public static final ComponentWrapper[] componentWrappers = new ComponentWrapper[]{new ComponentWrapper("Start", 7, true) {
+    public static final ComponentWrapper[] componentWrappers = new ComponentWrapper[]{new ComponentWrapper("Start", 6, true) {
         public boolean setData(float data) {
             JoystickWrapper.getInstance().startPressed(data >= 1);
             return super.setData(data);
         }
-    }, new ComponentWrapper("Stress", 2, true), new ComponentWrapper("Child missing", 1, true), new ComponentWrapper("Sad", 11), new ComponentWrapper("Anger", 12), new ComponentWrapper("Contempt", 14)};
+    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14), new ComponentWrapper("Contempt", 17)};
 
     private int componentNumber;
     private Component component;
