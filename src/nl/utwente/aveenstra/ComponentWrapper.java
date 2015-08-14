@@ -20,7 +20,7 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
             JoystickWrapper.getInstance().startPressed(data >= 1);
             return super.setData(data);
         }
-    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
+    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13, false), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
 
     private int componentNumber;
     private Component component;
@@ -39,7 +39,7 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
         this(name, i, false, 1);
     }
     public ComponentWrapper(String name, int i, boolean isButton) {
-        this(name, i, false, 1);
+        this(name, i, isButton, 1);
     }
     public ComponentWrapper(String name, int i, int inverse) {
         this(name, i, false, inverse);
