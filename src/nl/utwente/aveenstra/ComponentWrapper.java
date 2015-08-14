@@ -20,7 +20,7 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
             JoystickWrapper.getInstance().startPressed(data >= 1);
             return super.setData(data);
         }
-    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14), new ComponentWrapper("Contempt", 17)};
+    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
 
     private int componentNumber;
     private Component component;
@@ -33,12 +33,19 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
     private static Map<Component, ComponentWrapper> lookupTable;
     private java.util.function.Consumer<Number> updateFunction;
     private String name;
+    private int inverse;
 
     public ComponentWrapper(String name, int i) {
-        this(name, i, false);
+        this(name, i, false, 1);
+    }
+    public ComponentWrapper(String name, int i, boolean isButton) {
+        this(name, i, false, 1);
+    }
+    public ComponentWrapper(String name, int i, int inverse) {
+        this(name, i, false, inverse);
     }
 
-    public ComponentWrapper(String name, int i, boolean isButton) {
+    public ComponentWrapper(String name, int i, boolean isButton, int inverse) {
         this.name = name;
         componentNumber = i;
         this.isButton = isButton;
@@ -48,6 +55,7 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
         } else {
             axes.add(this);
         }
+        this.inverse = inverse;
     }
 
     public int getComponentNumber() {
@@ -71,11 +79,11 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
     }
 
     public boolean setData() {
-        return setData(component.getPollData());
+        return setData(component.getPollData() * inverse);
     }
 
     public boolean setDataAverage() {
-        boolean result = setData(component.getPollData());
+        boolean result = setData(component.getPollData() * inverse);
         averageCount++;
         averageTotal += data;
         return result;

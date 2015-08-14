@@ -89,7 +89,7 @@ public class JoystickWrapper extends Observable implements Runnable {
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
         for (int i = 0; i < controllers.length && controller == null; i++) {
             System.out.println(controllers[i].getName());
-            if (controllers[i].getType() == Controller.Type.STICK) {
+            if (controllers[i].getType() == Controller.Type.STICK || controllers[i].getType() == Controller.Type.GAMEPAD) {
                 this.controller = controllers[i];
                 System.out.println("Chosen");
             }
