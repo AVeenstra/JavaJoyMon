@@ -7,8 +7,6 @@ import net.java.games.input.Component;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -59,13 +57,11 @@ public class Main {
             } else if (line.hasOption(DEBUGGING)) {
                 JoystickWrapper joystick = JoystickWrapper.getInstance();
                 joystickThread = new Thread(joystick, "Joystick Thread");
-                joystick.addObserver(new Observer() {
-                    @Override
-                    public void update(Observable o, Object arg) {
-                        for (Component c : JoystickWrapper.getInstance().getController().getComponents()) {
-                            System.out.printf("%1.2f", c.getPollData());
-                        }
+                joystick.addObserver((o, arg) -> {
+                    for (Component c : JoystickWrapper.getInstance().getController().getComponents()) {
+                        System.out.printf("%1.2f", c.getPollData());
                     }
+                    System.out.print("\r");
                 });
             }else {
                 try {
