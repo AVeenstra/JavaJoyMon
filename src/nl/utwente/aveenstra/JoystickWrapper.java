@@ -118,7 +118,7 @@ public class JoystickWrapper extends Observable implements Runnable {
             if (isPressed) {
                 if (currentState == State.Recording) {
                     cyberballRecordingCSV.close();
-                    currentState = State.Configuration;
+                    setCurrentState(State.Configuration);
                 } else if (currentState == State.ReadyToRecord) {
                     for (ComponentWrapper component : ComponentWrapper.componentWrappers) {
                         component.getAverage();
@@ -128,7 +128,7 @@ public class JoystickWrapper extends Observable implements Runnable {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    currentState = State.Recording;
+                    setCurrentState(State.Recording);
                 }
             }
             startIsPressed = isPressed;
@@ -140,6 +140,10 @@ public class JoystickWrapper extends Observable implements Runnable {
     }
 
     public void setCurrentState(State currentState) {
-        this.currentState = currentState;
+        if (this.currentState != currentState) {
+            this.currentState = currentState;
+            setChanged();
+            notifyObservers();
+        }
     }
 }

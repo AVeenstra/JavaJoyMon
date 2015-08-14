@@ -15,12 +15,12 @@ import java.util.function.Consumer;
 public class ComponentWrapper extends ObservableValueBase<Number> implements ObservableFloatValue {
     public static final ArrayList<ComponentWrapper> buttons = new ArrayList<>();
     public static final ArrayList<ComponentWrapper> axes = new ArrayList<>();
-    public static final ComponentWrapper[] componentWrappers = new ComponentWrapper[]{new ComponentWrapper(6, true) {
+    public static final ComponentWrapper[] componentWrappers = new ComponentWrapper[]{new ComponentWrapper("Start", 6, true) {
         public boolean setData(float data) {
             JoystickWrapper.getInstance().startPressed(data >= 1);
             return super.setData(data);
         }
-    }, new ComponentWrapper(0, true), new ComponentWrapper(1, true), new ComponentWrapper(11), new ComponentWrapper(12), new ComponentWrapper(14)};
+    }, new ComponentWrapper("Stress", 0, true), new ComponentWrapper("Child missing", 1, true), new ComponentWrapper("Sad", 11), new ComponentWrapper("Anger", 12), new ComponentWrapper("Contempt", 14)};
 
     private int componentNumber;
     private Component component;
@@ -32,12 +32,14 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
     private float averageTotal = 0;
     private static Map<Component, ComponentWrapper> lookupTable;
     private java.util.function.Consumer<Number> updateFunction;
+    private String name;
 
-    public ComponentWrapper(int i) {
-        this(i, false);
+    public ComponentWrapper(String name, int i) {
+        this(name, i, false);
     }
 
-    public ComponentWrapper(int i, boolean isButton) {
+    public ComponentWrapper(String name, int i, boolean isButton) {
+        this.name = name;
         componentNumber = i;
         this.isButton = isButton;
         index = getMaxIndex();
@@ -118,6 +120,10 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
             }
         }
         return lookupTable.get(component);
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

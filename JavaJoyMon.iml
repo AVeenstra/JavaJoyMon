@@ -10,5 +10,6 @@
     <orderEntry type="library" name="commons-cli-1.3.1" level="project" />
     <orderEntry type="library" name="jxl" level="project" />
     <orderEntry type="library" name="jinput" level="project" />
+    <orderEntry type="library" name="jfxmessagebox-1.1.0" level="project" />
   </component>
 </module>

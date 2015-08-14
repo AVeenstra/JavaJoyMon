@@ -1,8 +1,14 @@
 package nl.utwente.aveenstra;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+import jfx.messagebox.MessageBox;
+import net.java.games.input.Component;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -13,10 +19,11 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
+    public static final String DEBUGGING = "debug";
     public static final String AUTHOR = "author";
     public static final String CLI = "cli";
-    public static final String DIR = "dir";
-    public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR,DIR};
+    public static final String DIRECTORY = "dir";
+    public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR, DIRECTORY};
     public static final String[] CONFIG_KEYS_BOOLEAN = new String[]{CLI};
 
     public static final String CONFIG_NODE_NAME = "JavaJoyMon";
@@ -33,7 +40,8 @@ public class Main {
     static {
         options.addOption(AUTHOR.charAt(0)+"", AUTHOR, true, "Set the name of the author of the results");
         options.addOption(CLI.charAt(0)+"", CLI, false, "Do not open a UI, but instead start a CLI.");
-        options.addOption(DIR.charAt(0)+"", DIR, true, "Set the root directory for the results.");
+        options.addOption(DEBUGGING.charAt(0)+"", DEBUGGING, false, "Start the debugging mode.");
+        options.addOption(DIRECTORY.charAt(0)+"", DIRECTORY, true, "Set the root directory for the results.");
         options.addOption("h", "help", false, "Prints this help message.");
     }
 
@@ -48,7 +56,18 @@ public class Main {
             CommandLine line = parser.parse(options, args);
             if (line.hasOption('h')) {
                 printHelp();
-            } else {
+            } else if (line.hasOption(DEBUGGING)) {
+                JoystickWrapper joystick = JoystickWrapper.getInstance();
+                joystickThread = new Thread(joystick, "Joystick Thread");
+                joystick.addObserver(new Observer() {
+                    @Override
+                    public void update(Observable o, Object arg) {
+                        for (Component c : JoystickWrapper.getInstance().getController().getComponents()) {
+                            System.out.printf("%1.2f", c.getPollData());
+                        }
+                    }
+                });
+            }else {
                 try {
                     System.out.println(Arrays.toString(Preferences.userRoot().node("JavaJoyMon").keys()));
                 } catch (BackingStoreException e) {
@@ -80,13 +99,15 @@ public class Main {
                 joystickThread.join();
             }
         } catch (ParseException e) {
-
             System.err.println(e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (NoControllerFoundException e) {
-            // TODO error popup
-            System.err.println("No joystick was found.");
+            if (PREFERENCES.getBoolean(CLI, false)) {
+                System.err.println("No joystick was found.");
+            } else {
+                new NoJoystickFound().run();
+            }
         } finally {
             stopRunning();
         }
@@ -104,5 +125,17 @@ public class Main {
     public static void stopRunning() {
         Main.running = false;
         JoystickWrapper.stop();
+    }
+
+    public static class NoJoystickFound extends Application{
+
+        public void run(){
+            launch();
+        }
+
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            MessageBox.show(null, "No joystick was found.", "Error starting the application", MessageBox.OK);
+        }
     }
 }
