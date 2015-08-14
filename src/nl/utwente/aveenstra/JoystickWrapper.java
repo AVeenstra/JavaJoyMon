@@ -100,7 +100,11 @@ public class JoystickWrapper extends Observable implements Runnable {
         } else {
             for (int i = 0; i < ComponentWrapper.componentWrappers.length; i++) {
                 ComponentWrapper component = ComponentWrapper.componentWrappers[i];
-                component.setComponent(controller.getComponents()[component.getComponentNumber()]);
+                if (component.getComponentNumber() < controller.getComponents().length) {
+                    component.setComponent(controller.getComponents()[component.getComponentNumber()]);
+                } else {
+                    System.err.println("Component number out of range please reconfigure your joystick!");
+                }
             }
         }
     }
