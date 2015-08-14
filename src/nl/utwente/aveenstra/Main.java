@@ -17,7 +17,7 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
-    public static final String DEBUGGING = "debug";
+    public static final String DEBUGGING = "blurp";
     public static final String AUTHOR = "author";
     public static final String CLI = "cli";
     public static final String DIRECTORY = "dir";

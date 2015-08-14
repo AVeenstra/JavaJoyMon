@@ -29,8 +29,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.40070504">
-              <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.2773208">
+              <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -271,7 +271,7 @@
       </extension>
       <option name="MAIN_CLASS_NAME" value="nl.utwente.aveenstra.Main" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="-d" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -604,7 +604,7 @@
       <workItem from="1438594163041" duration="17367000" />
       <workItem from="1439214422395" duration="121000" />
       <workItem from="1439286771467" duration="10539000" />
-      <workItem from="1439535106861" duration="1480000" />
+      <workItem from="1439535106861" duration="1538000" />
     </task>
     <task id="LOCAL-00001" summary="code!!!">
       <created>1438637315640</created>
@@ -618,11 +618,17 @@
       <option name="project" value="LOCAL" />
       <updated>1439536247641</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="code!!!">
+      <created>1439536592109</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1439536592109</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71316000" />
+    <option name="totallyTimeSpent" value="71374000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="950" height="1053" extended-state="4" />
@@ -1166,8 +1172,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40070504">
-          <caret line="62" column="21" selection-start-line="62" selection-start-column="21" selection-end-line="62" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.2773208">
+          <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
