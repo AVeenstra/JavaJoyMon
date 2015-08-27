@@ -23,9 +23,10 @@ public class Main {
     public static final String DIRECTORY = "dir";
     public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR, DIRECTORY};
     public static final String[] CONFIG_KEYS_BOOLEAN = new String[]{CLI};
-
     public static final String CONFIG_NODE_NAME = "JavaJoyMon";
     public static final Preferences PREFERENCES = Preferences.userRoot().node(CONFIG_NODE_NAME);
+    private static View view;
+    private static String rNumber = "";
     public static Thread joystickThread;
 
     private static boolean running = true;
@@ -87,7 +88,6 @@ public class Main {
 
                 JoystickWrapper joystick = JoystickWrapper.getInstance();
                 joystickThread = new Thread(joystick, "Joystick Thread");
-                View view;
                 if (PREFERENCES.getBoolean(CLI, false)) {
                     view = new ViewCLI();
                 } else {
@@ -136,5 +136,25 @@ public class Main {
         public void start(Stage primaryStage) throws Exception {
             MessageBox.show(null, "No joystick was found.", "Error starting the application", MessageBox.OK);
         }
+    }
+
+    public static String getrNumber() {
+        return rNumber;
+    }
+
+    public static String trimRNumber(String rNumber){
+        char first = rNumber.charAt(0);
+        if (first < '0' && '9' < first) {
+            rNumber = rNumber.substring(1);
+        }
+        return rNumber;
+    }
+
+    public static void setrNumber(String rNumber) {
+        Main.rNumber = trimRNumber(rNumber);
+    }
+
+    public static View getView() {
+        return view;
     }
 }

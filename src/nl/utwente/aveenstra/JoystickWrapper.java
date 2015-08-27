@@ -5,7 +5,7 @@ import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Event;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Observable;
 
 /**
@@ -19,7 +19,7 @@ public class JoystickWrapper extends Observable implements Runnable {
     private static JoystickWrapper INSTANCE;
     private Controller controller;
 
-    private CyberballRecordingCSV cyberballRecordingCSV;
+    private CyberballRecording cyberballRecording;
 
     private boolean startIsPressed = false;
 
@@ -36,8 +36,8 @@ public class JoystickWrapper extends Observable implements Runnable {
 
     public static void stop() {
         if (INSTANCE != null) {
-            if (INSTANCE.cyberballRecordingCSV != null) {
-                INSTANCE.cyberballRecordingCSV.close();
+            if (INSTANCE.cyberballRecording != null) {
+                INSTANCE.cyberballRecording.close();
             }
         }
     }
@@ -88,10 +88,8 @@ public class JoystickWrapper extends Observable implements Runnable {
     private void setController() {
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
         for (int i = 0; i < controllers.length && controller == null; i++) {
-            System.out.println(controllers[i].getName());
             if (controllers[i].getType() == Controller.Type.STICK || controllers[i].getType() == Controller.Type.GAMEPAD) {
                 this.controller = controllers[i];
-                System.out.println("Chosen");
             }
         }
         if (controller == null) {
@@ -121,18 +119,19 @@ public class JoystickWrapper extends Observable implements Runnable {
         if (isPressed != startIsPressed) {
             if (isPressed) {
                 if (currentState == State.Recording) {
-                    cyberballRecordingCSV.close();
-                    setCurrentState(State.Configuration);
+                    cyberballRecording.close();
+                    cyberballRecording = null;
+                    setCurrentState(State.Configuration, true);
                 } else if (currentState == State.ReadyToRecord) {
                     for (ComponentWrapper component : ComponentWrapper.componentWrappers) {
                         component.getAverage();
                     }
                     try {
-                        cyberballRecordingCSV = new CyberballRecordingCSV();
-                    } catch (FileNotFoundException e) {
+                        cyberballRecording = new CyberballRecording();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    setCurrentState(State.Recording);
+                    setCurrentState(State.Recording, true);
                 }
             }
             startIsPressed = isPressed;
@@ -143,8 +142,8 @@ public class JoystickWrapper extends Observable implements Runnable {
         return currentState;
     }
 
-    public void setCurrentState(State currentState) {
-        if (this.currentState != currentState) {
+    public void setCurrentState(State currentState, boolean updateView) {
+        if (this.currentState != currentState && updateView) {
             this.currentState = currentState;
             setChanged();
             notifyObservers();

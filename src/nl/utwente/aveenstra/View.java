@@ -17,4 +17,8 @@ public interface View extends Observer {
             e.printStackTrace();
         }
     }
+
+    default int getUnderstood() {
+        return 1;
+    }
 }

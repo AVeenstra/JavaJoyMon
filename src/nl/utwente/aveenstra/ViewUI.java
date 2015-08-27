@@ -16,17 +16,20 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import jfx.messagebox.MessageBox;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
 
 /**
  * Created by antoine on 02/08/15.
  */
 public class ViewUI extends Application implements View {
-    public static final Pattern rNumberPattern = Pattern.compile("^r?[0-9]+$");
+    public static final Pattern rNumberPattern = Pattern.compile("^[rR]?[0-9]+$");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
@@ -35,6 +38,7 @@ public class ViewUI extends Application implements View {
     private TabPane tabPane;
     private Tab configurationTab;
     private Tab recordingTab;
+    private Stage primaryStage;
 
     public ViewUI() {
         super();
@@ -43,6 +47,7 @@ public class ViewUI extends Application implements View {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
         ApplicationKiller killer = new ApplicationKiller();
         primaryStage.setOnCloseRequest(killer);
         primaryStage.setTitle("test");
@@ -72,9 +77,7 @@ public class ViewUI extends Application implements View {
     @Override
     public void update(Observable o, Object arg) {
         if (arg != null && arg instanceof Boolean) {
-            for (UpdatingScatterChart chart : charts) {
-                chart.setChanged();
-            }
+            charts.forEach(ViewUI.UpdatingScatterChart::setChanged);
         } else if (tabPane != null) {
             if (JoystickWrapper.getInstance().getCurrentState() == JoystickWrapper.State.Configuration) {
                 Platform.runLater(new Thread() {
@@ -82,6 +85,7 @@ public class ViewUI extends Application implements View {
                     public void run() {
                         configurationTab.setDisable(false);
                         tabPane.getSelectionModel().select(configurationTab);
+                        checkConfiguration();
                     }
                 });
             } else if (JoystickWrapper.getInstance().getCurrentState() == JoystickWrapper.State.ReadyToRecord) {
@@ -125,7 +129,7 @@ public class ViewUI extends Application implements View {
             okButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    setReadyToRecord();
+                    setReadyToRecord(true);
                 }
             });
 
@@ -139,7 +143,7 @@ public class ViewUI extends Application implements View {
                     if (file.isDirectory()) {
                         chooser.setInitialDirectory(file);
                     }
-                    file = chooser.showDialog(null);
+                    file = chooser.showDialog(primaryStage);
                     if (file != null) {
                         directory.setText(file.getPath());
                     }
@@ -181,7 +185,7 @@ public class ViewUI extends Application implements View {
                     if (newValue == configurationTab) {
                         setConfiguration();
                     } else {
-                        setReadyToRecord();
+                        setReadyToRecord(false);
                     }
                 }
             });
@@ -192,14 +196,15 @@ public class ViewUI extends Application implements View {
         }
     }
 
-    private void setReadyToRecord() {
+    private void setReadyToRecord(boolean updateView) {
         Main.PREFERENCES.put(Main.AUTHOR, author.getText());
         Main.PREFERENCES.put(Main.DIRECTORY, directory.getText());
-        JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord);
+        Main.setrNumber(rNumber.getText());
+        JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord, updateView);
     }
 
     private void setConfiguration() {
-        JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.Configuration);
+        JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.Configuration, false);
     }
 
     private Scene createWindowOneAxes(int axes) {
@@ -240,8 +245,8 @@ public class ViewUI extends Application implements View {
     }
 
     public void checkConfiguration() {
-        File file = new File(directory.getText());
-        boolean temp = author.getText().isEmpty() || !(file.isDirectory() && file.canWrite() && file.canExecute() && file.canRead() && rNumberPattern.matcher(rNumber.getText()).find());
+        File folder = new File(directory.getText());
+        boolean temp = author.getText().isEmpty() || !(folder.isDirectory() && folder.canWrite() && folder.canExecute() && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, rNumber.getText()).exists());
         Platform.runLater(new Thread() {
             @Override
             public void run() {
@@ -270,6 +275,18 @@ public class ViewUI extends Application implements View {
                 e.printStackTrace();
             }
             System.exit(0);
+        }
+    }
+
+    public int getUnderstood() {
+        while (true) {
+            BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
+            Platform.runLater(() -> queue.add(MessageBox.show(primaryStage, "Did the child understand the test?", "Finalising the test", MessageBox.YES | MessageBox.NO) == MessageBox.YES ? 2 : 1));
+            try {
+                return queue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

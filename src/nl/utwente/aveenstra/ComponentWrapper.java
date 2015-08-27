@@ -1,7 +1,5 @@
 package nl.utwente.aveenstra;
 
-import javafx.beans.value.ObservableFloatValue;
-import javafx.beans.value.ObservableValueBase;
 import net.java.games.input.Component;
 
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * Created by antoine on 02/08/15.
  */
-public class ComponentWrapper extends ObservableValueBase<Number> implements ObservableFloatValue {
+public class ComponentWrapper {
     public static final ArrayList<ComponentWrapper> buttons = new ArrayList<>();
     public static final ArrayList<ComponentWrapper> axes = new ArrayList<>();
     public static final ComponentWrapper[] componentWrappers = new ComponentWrapper[]{new ComponentWrapper("Start", 6, true) {
@@ -20,7 +18,7 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
             JoystickWrapper.getInstance().startPressed(data >= 1);
             return super.setData(data);
         }
-    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13, false), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
+    }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
 
     private int componentNumber;
     private Component component;
@@ -110,7 +108,12 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
     }
 
     public float getAverage() {
-        float result = averageTotal / averageCount;
+        float result;
+        if (0 < averageCount) {
+            result = averageTotal / averageCount;
+        } else {
+            result = data;
+        }
         averageCount = 0;
         averageTotal = 0;
         return result;
@@ -123,8 +126,8 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
     public static ComponentWrapper getComponentWrapper(Component component) {
         if (lookupTable == null) {
             lookupTable = new HashMap<>();
-            for (int i = 0; i < componentWrappers.length; i++) {
-                lookupTable.put(componentWrappers[i].getComponent(), componentWrappers[i]);
+            for (ComponentWrapper componentWrapper : componentWrappers) {
+                lookupTable.put(componentWrapper.getComponent(), componentWrapper);
             }
         }
         return lookupTable.get(component);
@@ -132,36 +135,6 @@ public class ComponentWrapper extends ObservableValueBase<Number> implements Obs
 
     public String getName() {
         return name;
-    }
-
-    @Override
-    public float get() {
-        return data;
-    }
-
-    @Override
-    public int intValue() {
-        return (int) data;
-    }
-
-    @Override
-    public long longValue() {
-        return (long) data;
-    }
-
-    @Override
-    public float floatValue() {
-        return data;
-    }
-
-    @Override
-    public double doubleValue() {
-        return data;
-    }
-
-    @Override
-    public Number getValue() {
-        return data;
     }
 
     public void setUpdateFunction(Consumer<Number> updateFunction) {
