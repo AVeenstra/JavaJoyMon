@@ -12,6 +12,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import jfx.messagebox.MessageBox;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -29,6 +31,8 @@ import java.util.regex.Pattern;
  * Created by antoine on 02/08/15.
  */
 public class ViewUI extends Application implements View {
+    public static final String readyToRecordString = "Ready to record";
+    public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?[0-9]+$");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
@@ -39,6 +43,7 @@ public class ViewUI extends Application implements View {
     private Tab configurationTab;
     private Tab recordingTab;
     private Stage primaryStage;
+    private Label state;
 
     public ViewUI() {
         super();
@@ -50,7 +55,7 @@ public class ViewUI extends Application implements View {
         this.primaryStage = primaryStage;
         ApplicationKiller killer = new ApplicationKiller();
         primaryStage.setOnCloseRequest(killer);
-        primaryStage.setTitle("test");
+        primaryStage.setTitle("JavaJoyMon");
         primaryStage.setScene(createWindowTwoAxes(0, 1, true));
         primaryStage.show();
 
@@ -58,7 +63,7 @@ public class ViewUI extends Application implements View {
         for (; i < ComponentWrapper.axes.size() - 1; i += 2) {
             Stage temp = new Stage();
             temp.setOnCloseRequest(killer);
-            temp.setTitle("test");
+            temp.setTitle("JavaJoyMon");
             temp.setScene(createWindowTwoAxes(i, i + 1, false));
             temp.show();
         }
@@ -66,7 +71,7 @@ public class ViewUI extends Application implements View {
         if (i < ComponentWrapper.axes.size()) {
             Stage temp = new Stage();
             temp.setOnCloseRequest(killer);
-            temp.setTitle("test");
+            temp.setTitle("JavaJoyMon");
             temp.setScene(createWindowOneAxes(i));
             temp.show();
         }
@@ -86,6 +91,7 @@ public class ViewUI extends Application implements View {
                         configurationTab.setDisable(false);
                         tabPane.getSelectionModel().select(configurationTab);
                         checkConfiguration();
+                        state.setText("");
                     }
                 });
             } else if (JoystickWrapper.getInstance().getCurrentState() == JoystickWrapper.State.ReadyToRecord) {
@@ -94,6 +100,7 @@ public class ViewUI extends Application implements View {
                     public void run() {
                         configurationTab.setDisable(false);
                         tabPane.getSelectionModel().select(recordingTab);
+                        state.setText(readyToRecordString);
                     }
                 });
             } else {
@@ -102,6 +109,7 @@ public class ViewUI extends Application implements View {
                     public void run() {
                         configurationTab.setDisable(true);
                         tabPane.getSelectionModel().select(recordingTab);
+                        state.setText(recordingString);
                     }
                 });
             }
@@ -120,10 +128,11 @@ public class ViewUI extends Application implements View {
         ComponentWrapper wrapper2 = ComponentWrapper.axes.get(axes2);
 
         UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1000, 200), new NumberAxis(0, 1000, 200), data);
-        wrapper1.setUpdateFunction(chart::setXValue);
-        wrapper2.setUpdateFunction(chart::setYValue);
+        wrapper1.addUpdateFunction(chart::setXValue);
+        wrapper2.addUpdateFunction(chart::setYValue);
 
         chart.setTitle(wrapper1.getName() + " - " + wrapper2.getName());
+        BorderPane chartPane = new BorderPane(chart, null, null, new UpdatingLabel(wrapper1), new UpdatingLabel(wrapper2));
         if (main) {
             okButton = new Button("OK");
             okButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -171,9 +180,22 @@ public class ViewUI extends Application implements View {
             configurationTab.setClosable(false);
             configurationTab.setContent(gridPane);
 
+            GridPane recordingGrid = new GridPane();
+            recordingGrid.add(state = new Label("Ready to record"), 0,0,4,1);
+            recordingGrid.add(chartPane, 0, 1, 4, 1);
+
+            Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
+            for (int row = 2; iterator.hasNext(); row++) {
+                for (int column = 0; column < 4 && iterator.hasNext(); column += 2) {
+                    ComponentWrapper tempWrapper = iterator.next();
+                    recordingGrid.add(new Label(tempWrapper.getName()), column, row);
+                    recordingGrid.add(new UpdatingLabel(tempWrapper), column + 1, row);
+                }
+            }
+
             recordingTab = new Tab("Record");
             recordingTab.setClosable(false);
-            recordingTab.setContent(chart);
+            recordingTab.setContent(recordingGrid);
 
             tabPane = new TabPane();
             tabPane.getTabs().add(configurationTab);
@@ -192,7 +214,7 @@ public class ViewUI extends Application implements View {
 
             return new Scene(tabPane, 500, 600);
         } else {
-            return new Scene(chart, 500, 500);
+            return new Scene(chartPane, 500, 500);
         }
     }
 
@@ -208,12 +230,13 @@ public class ViewUI extends Application implements View {
     }
 
     private Scene createWindowOneAxes(int axes) {
+        ComponentWrapper component = ComponentWrapper.axes.get(axes);
         ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.5, 0);
 
         UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1, 1), new NumberAxis(0, 1000, 200), data);
-        ComponentWrapper.axes.get(axes).setUpdateFunction(chart::setYValue);
-        chart.setTitle("pudding");
-        return new Scene(chart, 100, 500);
+        component.addUpdateFunction(chart::setYValue);
+        chart.setTitle(component.getName());
+        return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
     }
 
     public class UpdatingScatterChart extends ScatterChart<Number, Number> {
@@ -287,6 +310,17 @@ public class ViewUI extends Application implements View {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private class UpdatingLabel extends Label {
+        UpdatingLabel(ComponentWrapper component) {
+            super("0");
+            component.addUpdateFunction(this::setValue);
+        }
+
+        void setValue(Number value) {
+            Platform.runLater(() -> setText(value.intValue() + ""));
         }
     }
 }

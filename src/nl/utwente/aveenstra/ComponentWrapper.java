@@ -4,11 +4,12 @@ import net.java.games.input.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Created by antoine on 02/08/15.
+ * Created by Antoine on 02/08/15.
  */
 public class ComponentWrapper {
     public static final ArrayList<ComponentWrapper> buttons = new ArrayList<>();
@@ -17,6 +18,9 @@ public class ComponentWrapper {
         public boolean setData(float data) {
             JoystickWrapper.getInstance().startPressed(data >= 1);
             return super.setData(data);
+        }
+
+        protected void addToType(boolean ignored) {
         }
     }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
 
@@ -29,18 +33,20 @@ public class ComponentWrapper {
     private int averageCount = 0;
     private float averageTotal = 0;
     private static Map<Component, ComponentWrapper> lookupTable;
-    private java.util.function.Consumer<Number> updateFunction;
+    private LinkedList<Consumer<Number>> updateFunctions;
     private String name;
     private int inverse;
 
     public ComponentWrapper(String name, int i) {
-        this(name, i, false, 1);
+        this(name, i, false, 1000);
     }
+
     public ComponentWrapper(String name, int i, boolean isButton) {
         this(name, i, isButton, 1);
     }
+
     public ComponentWrapper(String name, int i, int inverse) {
-        this(name, i, false, inverse);
+        this(name, i, false, inverse * 1000);
     }
 
     public ComponentWrapper(String name, int i, boolean isButton, int inverse) {
@@ -48,12 +54,9 @@ public class ComponentWrapper {
         componentNumber = i;
         this.isButton = isButton;
         index = getMaxIndex();
-        if (isButton) {
-            buttons.add(this);
-        } else {
-            axes.add(this);
-        }
+        addToType(isButton);
         this.inverse = inverse;
+        updateFunctions = new LinkedList<>();
     }
 
     public int getComponentNumber() {
@@ -91,8 +94,9 @@ public class ComponentWrapper {
         data = Math.max(0, data);
         boolean result = this.data != data;
         this.data = data;
-        if (result && updateFunction != null) {
-            updateFunction.accept(data*1000);
+        if (result) {
+            final float finalData = data;
+            updateFunctions.forEach(e -> e.accept(finalData));
         }
         return result;
     }
@@ -137,7 +141,15 @@ public class ComponentWrapper {
         return name;
     }
 
-    public void setUpdateFunction(Consumer<Number> updateFunction) {
-        this.updateFunction = updateFunction;
+    public void addUpdateFunction(Consumer<Number> updateFunction) {
+        this.updateFunctions.add(updateFunction);
+    }
+
+    protected void addToType(boolean isButton) {
+        if (isButton) {
+            buttons.add(this);
+        } else {
+            axes.add(this);
+        }
     }
 }
