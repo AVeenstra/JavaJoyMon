@@ -54,7 +54,7 @@ public class Main {
             if (line.hasOption('h')) {
                 printHelp();
             } else {
-                System.setProperty("net.java.games.input.librarypath", System.getProperty("user.dir") + File.separator + "lib");
+                System.setProperty("net.java.games.input.librarypath", new File(Main.class.getProtectionDomain().getCodeSource().getLocation().getFile()).toPath().resolveSibling("lib").toString());
                 try {
                     System.out.println(Arrays.toString(Preferences.userRoot().node("JavaJoyMon").keys()));
                 } catch (BackingStoreException e) {
