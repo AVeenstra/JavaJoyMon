@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="JoyMon">
-    <output-path>$PROJECT_DIR$/JoyMon</output-path>
-    <root id="archive" name="JoyMon.jar" />
-  </artifact>
-</component>

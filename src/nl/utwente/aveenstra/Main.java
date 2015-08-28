@@ -3,9 +3,9 @@ package nl.utwente.aveenstra;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import jfx.messagebox.MessageBox;
-import net.java.games.input.Component;
 import org.apache.commons.cli.*;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -17,7 +17,6 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
-    public static final String DEBUGGING = "blurp";
     public static final String AUTHOR = "author";
     public static final String CLI = "cli";
     public static final String DIRECTORY = "dir";
@@ -39,7 +38,6 @@ public class Main {
     static {
         options.addOption(AUTHOR.charAt(0)+"", AUTHOR, true, "Set the name of the author of the results");
         options.addOption(CLI.charAt(0)+"", CLI, false, "Do not open a UI, but instead start a CLI.");
-        options.addOption(DEBUGGING.charAt(0)+"", DEBUGGING, false, "Start the debugging mode.");
         options.addOption(DIRECTORY.charAt(0)+"", DIRECTORY, true, "Set the root directory for the results.");
         options.addOption("h", "help", false, "Prints this help message.");
     }
@@ -55,20 +53,8 @@ public class Main {
             CommandLine line = parser.parse(options, args);
             if (line.hasOption('h')) {
                 printHelp();
-            } else if (line.hasOption(DEBUGGING)) {
-                JoystickWrapper joystick = JoystickWrapper.getInstance();
-                joystickThread = new Thread(joystick, "Joystick Thread");
-                joystick.addObserver((o, arg) -> {
-                    int i = 0;
-                    for (Component c : JoystickWrapper.getInstance().getController().getComponents()) {
-
-                        System.out.printf("%d:%1.2f  ", i++, c.getPollData());
-                    }
-                    System.out.print("\r");
-                });
-                joystickThread.run();
-                joystickThread.join();
-            }else {
+            } else {
+                System.setProperty("net.java.games.input.librarypath", System.getProperty("user.dir") + File.separator + "lib");
                 try {
                     System.out.println(Arrays.toString(Preferences.userRoot().node("JavaJoyMon").keys()));
                 } catch (BackingStoreException e) {
