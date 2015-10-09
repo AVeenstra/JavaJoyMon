@@ -239,6 +239,30 @@ public class ViewUI extends Application implements View {
         return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
     }
 
+    public void checkConfiguration() {
+        File folder = new File(directory.getText());
+        boolean temp = author.getText().isEmpty() || !(folder.isDirectory() && folder.canWrite() && folder.canExecute() && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, Main.trimRNumber(rNumber.getText())).exists());
+        Platform.runLater(new Thread() {
+            @Override
+            public void run() {
+                okButton.setDisable(temp);
+                recordingTab.setDisable(temp);
+            }
+        });
+    }
+
+    public int getUnderstood() {
+        while (true) {
+            BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
+            Platform.runLater(() -> queue.add(MessageBox.show(primaryStage, "Did the child understand the test?", "Finalising the test", MessageBox.YES | MessageBox.NO) == MessageBox.YES ? 2 : 1));
+            try {
+                return queue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class UpdatingScatterChart extends ScatterChart<Number, Number> {
         private ScatterChart.Data<Number, Number> point;
 
@@ -267,18 +291,6 @@ public class ViewUI extends Application implements View {
         }
     }
 
-    public void checkConfiguration() {
-        File folder = new File(directory.getText());
-        boolean temp = author.getText().isEmpty() || !(folder.isDirectory() && folder.canWrite() && folder.canExecute() && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, rNumber.getText()).exists());
-        Platform.runLater(new Thread() {
-            @Override
-            public void run() {
-                okButton.setDisable(temp);
-                recordingTab.setDisable(temp);
-            }
-        });
-    }
-
     private class ConfigChangeHandler implements EventHandler<KeyEvent> {
 
         @Override
@@ -298,18 +310,6 @@ public class ViewUI extends Application implements View {
                 e.printStackTrace();
             }
             System.exit(0);
-        }
-    }
-
-    public int getUnderstood() {
-        while (true) {
-            BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
-            Platform.runLater(() -> queue.add(MessageBox.show(primaryStage, "Did the child understand the test?", "Finalising the test", MessageBox.YES | MessageBox.NO) == MessageBox.YES ? 2 : 1));
-            try {
-                return queue.take();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 

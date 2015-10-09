@@ -29,10 +29,10 @@ public class CyberballRecording implements Observer {
             throw new FileAlreadyExistsException(file.getPath());
         }
         workbook = jxl.Workbook.createWorkbook(file);
-        sheet = workbook.createSheet('r' + Main.getrNumber(), 0);
+        sheet = workbook.createSheet('R' + Main.getrNumber(), 0);
         try {
-            sheet.addCell(new Label(0, 0, "r nummer"));
-            sheet.addCell(new Label(0, 1, 'r' + Main.getrNumber()));
+            sheet.addCell(new Label(0, 0, "R nummer"));
+            sheet.addCell(new Label(0, 1, 'R' + Main.getrNumber()));
             sheet.addCell(new Label(1, 0, "Author"));
             sheet.addCell(new Label(1, 1, Main.PREFERENCES.get(Main.AUTHOR, null)));
             sheet.addCell(new Label(2, 0, "scoring date"));
@@ -47,6 +47,18 @@ public class CyberballRecording implements Observer {
             e.printStackTrace();
         }
         startTime = System.currentTimeMillis();
+    }
+
+    public static File buildPath() {
+        return buildPath(new File(Main.PREFERENCES.get(Main.DIRECTORY, null)), Main.getrNumber());
+    }
+
+    public static File buildPath(File folder, String rNumber) {
+        return folder.toPath().resolve('R' + rNumber + ".xls").toFile();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new DateTimeStringConverter().toString(new Date()));
     }
 
     @Override
@@ -71,7 +83,7 @@ public class CyberballRecording implements Observer {
     public void close() {
         JoystickWrapper.getInstance().deleteObserver(this);
         try {
-            sheet.addCell(new Number(3,1, Main.getView().getUnderstood()));
+            sheet.addCell(new Number(3, 1, Main.getView().getUnderstood()));
             workbook.write();
             workbook.close();
         } catch (IOException | WriteException e) {
@@ -80,17 +92,5 @@ public class CyberballRecording implements Observer {
 //        if (writer != null) {
 //            writer.close();
 //        }
-    }
-
-    public static File buildPath() {
-        return buildPath(new File(Main.PREFERENCES.get(Main.DIRECTORY, null)), Main.getrNumber());
-    }
-
-    public static File buildPath(File folder, String rNumber) {
-        return folder.toPath().resolve('r' + rNumber + ".xls").toFile();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new DateTimeStringConverter().toString(new Date()));
     }
 }
