@@ -233,7 +233,7 @@ public class ViewUI extends Application implements View {
         ComponentWrapper component = ComponentWrapper.axes.get(axes);
         ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.5, 0);
 
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1, 1), new NumberAxis(0, 1000, 200), data);
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1, 1), new NumberAxis(0, 5, 1), data);
         component.addUpdateFunction(chart::setYValue);
         chart.setTitle(component.getName());
         return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
