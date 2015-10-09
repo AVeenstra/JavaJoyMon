@@ -17,6 +17,9 @@ import java.util.prefs.Preferences;
  */
 public class Main {
 
+    /**
+     * Key used for author name.
+     */
     public static final String AUTHOR = "author";
     public static final String CLI = "cli";
     public static final String DIRECTORY = "dir";
