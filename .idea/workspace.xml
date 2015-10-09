@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="443ad7ec-8edc-4932-812e-9512a1522a4a" name="Default" comment="R ipv r,">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nl/utwente/aveenstra/CyberballRecording.java" afterPath="$PROJECT_DIR$/src/nl/utwente/aveenstra/CyberballRecording.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java" afterPath="$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/nl/utwente/aveenstra/ViewUI.java" afterPath="$PROJECT_DIR$/src/nl/utwente/aveenstra/ViewUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="443ad7ec-8edc-4932-812e-9512a1522a4a" name="Default" comment="R ipv r, altijd single R en bugfix.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="JavaJoyMon.iws" />
@@ -86,13 +82,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="134" column="9" selection-start-line="134" selection-start-column="9" selection-end-line="134" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.73421925">
+              <caret line="33" column="7" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4461#4462#0" expanded="true" />
+                <element signature="e#4512#4513#0" expanded="true" />
+                <element signature="e#4888#4889#0" expanded="true" />
+                <element signature="e#4920#4921#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -118,13 +118,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewUI.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ViewUI.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/ViewUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
-              <caret line="169" column="44" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
+            <state vertical-scroll-proportion="-6.586207">
+              <caret line="169" column="38" selection-start-line="169" selection-start-column="36" selection-end-line="169" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4220#4221#0" expanded="true" />
+                <element signature="e#4244#4245#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -161,9 +163,9 @@
         <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/View.java" />
         <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/CyberballRecordingXL.java" />
         <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/ComponentWrapper.java" />
-        <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java" />
         <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/CyberballRecording.java" />
         <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/ViewUI.java" />
+        <option value="$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java" />
       </list>
     </option>
   </component>
@@ -649,7 +651,19 @@
       <option name="project" value="LOCAL" />
       <updated>1440682556065</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="R ipv r, altijd single R en bugfix.">
+      <created>1444396032234</created>
+      <option name="number" value="00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1444396032234</updated>
+    </task>
+    <task id="LOCAL-00017" summary="java doc">
+      <created>1444396705685</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1444396705685</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -657,7 +671,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -670,7 +684,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33544305" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33177084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33177084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -736,7 +750,12 @@
     <MESSAGE value="code!!!" />
     <MESSAGE value="added question at the end of a test and replaced csv support by xls support" />
     <MESSAGE value="added more feedback to the user" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more feedback to the user" />
+    <MESSAGE value="R ipv r, altijd single R en bugfix." />
+    <MESSAGE value="java doc" />
+    <option name="LAST_COMMIT_MESSAGE" value="java doc" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -802,6 +821,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4512#4513#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
+            <element signature="e#4920#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -828,6 +851,8 @@
           <caret line="101" column="66" selection-start-line="101" selection-start-column="66" selection-end-line="101" selection-end-column="66" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4220#4221#0" expanded="true" />
+            <element signature="e#4244#4245#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -846,6 +871,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4512#4513#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
+            <element signature="e#4920#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -873,6 +902,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4512#4513#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
+            <element signature="e#4920#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -900,6 +933,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4512#4513#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
+            <element signature="e#4920#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -927,6 +964,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4512#4513#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
+            <element signature="e#4920#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1059,16 +1100,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="134" column="9" selection-start-line="134" selection-start-column="9" selection-end-line="134" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/CyberballRecording.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.586207">
@@ -1126,10 +1157,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/ViewUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="169" column="44" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
+        <state vertical-scroll-proportion="-6.586207">
+          <caret line="169" column="38" selection-start-line="169" selection-start-column="36" selection-end-line="169" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4220#4221#0" expanded="true" />
+            <element signature="e#4244#4245#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/nl/utwente/aveenstra/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.73421925">
+          <caret line="33" column="7" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4461#4462#0" expanded="true" />
+            <element signature="e#4512#4513#0" expanded="true" />
+            <element signature="e#4888#4889#0" expanded="true" />
+            <element signature="e#4920#4921#0" expanded="true" />
           </folding>
         </state>
       </provider>
