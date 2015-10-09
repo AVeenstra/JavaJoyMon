@@ -19,6 +19,9 @@ public class Main {
 
     public static final String AUTHOR = "author";
     public static final String CLI = "cli";
+    /**
+     * Key used for preferences
+     */
     public static final String DIRECTORY = "dir";
     public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR, DIRECTORY};
     public static final String[] CONFIG_KEYS_BOOLEAN = new String[]{CLI};
