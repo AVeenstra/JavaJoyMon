@@ -126,12 +126,12 @@ public class ViewUI extends Application implements View {
 
         ComponentWrapper wrapper1 = ComponentWrapper.axes.get(axes1);
         ComponentWrapper wrapper2 = ComponentWrapper.axes.get(axes2);
-
+// Axes Sad and Anger
         UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 5, 1), new NumberAxis(0, 5, 1), data);
         wrapper1.addUpdateFunction(chart::setXValue);
         wrapper2.addUpdateFunction(chart::setYValue);
 
-        chart.setTitle(wrapper1.getName() + " - " + wrapper2.getName());
+        //      chart.set(wrapper1.getName());
         BorderPane chartPane = new BorderPane(chart, null, null, new UpdatingLabel(wrapper1), new UpdatingLabel(wrapper2));
         if (main) {
             okButton = new Button("OK");
@@ -182,14 +182,16 @@ public class ViewUI extends Application implements View {
 
             GridPane recordingGrid = new GridPane();
             recordingGrid.add(state = new Label("Ready to record"), 0,0,4,1);
-            recordingGrid.add(chartPane, 0, 1, 4, 1);
+            recordingGrid.add(chartPane, 0, 3, 4, 1);
+            recordingGrid.add(new Label(wrapper1.getName()), 4, 5, 1, 1);
+            recordingGrid.add(new Label(wrapper2.getName()), 0, 3, 1, 1);
 
             Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
             for (int row = 2; iterator.hasNext(); row++) {
                 for (int column = 0; column < 4 && iterator.hasNext(); column += 2) {
                     ComponentWrapper tempWrapper = iterator.next();
-                    recordingGrid.add(new Label(tempWrapper.getName()), column, row);
-                    recordingGrid.add(new UpdatingLabel(tempWrapper), column + 1, row);
+                    recordingGrid.add(new Label(tempWrapper.getName()), column, row + 3);
+                    recordingGrid.add(new UpdatingLabel(tempWrapper), column + 1, row + 3);
                 }
             }
 
@@ -231,9 +233,10 @@ public class ViewUI extends Application implements View {
 
     private Scene createWindowOneAxes(int axes) {
         ComponentWrapper component = ComponentWrapper.axes.get(axes);
-        ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.5, 0);
+        ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.1, 0);
 
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1, 1), new NumberAxis(0, 5, 1), data);
+// Contempt
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 0, 0), new NumberAxis(0, 5, 1), data);
         component.addUpdateFunction(chart::setYValue);
         chart.setTitle(component.getName());
         return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
