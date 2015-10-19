@@ -127,7 +127,7 @@ public class ViewUI extends Application implements View {
         ComponentWrapper wrapper1 = ComponentWrapper.axes.get(axes1);
         ComponentWrapper wrapper2 = ComponentWrapper.axes.get(axes2);
 
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1000, 200), new NumberAxis(0, 1000, 200), data);
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 5, 1), new NumberAxis(0, 5, 1), data);
         wrapper1.addUpdateFunction(chart::setXValue);
         wrapper2.addUpdateFunction(chart::setYValue);
 

@@ -14,6 +14,16 @@ import java.util.function.Consumer;
 public class ComponentWrapper {
     public static final ArrayList<ComponentWrapper> buttons = new ArrayList<>();
     public static final ArrayList<ComponentWrapper> axes = new ArrayList<>();
+    private static int maxIndex = 0;
+    private static Map<Component, ComponentWrapper> lookupTable;
+    private int componentNumber;
+    private Component component;
+    private boolean isButton;
+    private int index;
+    private float data;
+    private int averageCount = 0;
+    private float averageTotal = 0;
+    private LinkedList<Consumer<Number>> updateFunctions;
     public static final ComponentWrapper[] componentWrappers = new ComponentWrapper[]{new ComponentWrapper("Start", 6, true) {
         public boolean setData(float data) {
             JoystickWrapper.getInstance().startPressed(data >= 1);
@@ -23,22 +33,11 @@ public class ComponentWrapper {
         protected void addToType(boolean ignored) {
         }
     }, new ComponentWrapper("Stress", 1, true), new ComponentWrapper("Child missing", 0, true), new ComponentWrapper("Sad", 13), new ComponentWrapper("Anger", 14, -1), new ComponentWrapper("Contempt", 17, -1)};
-
-    private int componentNumber;
-    private Component component;
-    private boolean isButton;
-    private int index;
-    private static int maxIndex = 0;
-    private float data;
-    private int averageCount = 0;
-    private float averageTotal = 0;
-    private static Map<Component, ComponentWrapper> lookupTable;
-    private LinkedList<Consumer<Number>> updateFunctions;
     private String name;
     private int inverse;
 
     public ComponentWrapper(String name, int i) {
-        this(name, i, false, 1000);
+        this(name, i, false, 5);
     }
 
     public ComponentWrapper(String name, int i, boolean isButton) {
@@ -46,7 +45,7 @@ public class ComponentWrapper {
     }
 
     public ComponentWrapper(String name, int i, int inverse) {
-        this(name, i, false, inverse * 1000);
+        this(name, i, false, inverse * 5);
     }
 
     public ComponentWrapper(String name, int i, boolean isButton, int inverse) {
@@ -59,24 +58,34 @@ public class ComponentWrapper {
         updateFunctions = new LinkedList<>();
     }
 
-    public int getComponentNumber() {
-        return componentNumber;
+    private static int getMaxIndex() {
+        return maxIndex++;
     }
 
-    public void setComponent(Component component) {
-        this.component = component;
+    public static ComponentWrapper getComponentWrapper(Component component) {
+        if (lookupTable == null) {
+            lookupTable = new HashMap<>();
+            for (ComponentWrapper componentWrapper : componentWrappers) {
+                lookupTable.put(componentWrapper.getComponent(), componentWrapper);
+            }
+        }
+        return lookupTable.get(component);
+    }
+
+    public int getComponentNumber() {
+        return componentNumber;
     }
 
     public Component getComponent() {
         return component;
     }
 
-    public boolean isButton() {
-        return isButton;
+    public void setComponent(Component component) {
+        this.component = component;
     }
 
-    private static int getMaxIndex() {
-        return maxIndex++;
+    public boolean isButton() {
+        return isButton;
     }
 
     public boolean setData() {
@@ -125,16 +134,6 @@ public class ComponentWrapper {
 
     public int getIndex() {
         return index;
-    }
-
-    public static ComponentWrapper getComponentWrapper(Component component) {
-        if (lookupTable == null) {
-            lookupTable = new HashMap<>();
-            for (ComponentWrapper componentWrapper : componentWrappers) {
-                lookupTable.put(componentWrapper.getComponent(), componentWrapper);
-            }
-        }
-        return lookupTable.get(component);
     }
 
     public String getName() {
