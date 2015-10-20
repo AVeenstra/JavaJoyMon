@@ -194,8 +194,9 @@ public class ViewUI extends Application implements View {
             recordingGrid.add(new Label(wrapper1.getName()), 6, 5, 1, 1);
             recordingGrid.add(new Label(wrapper2.getName()), 0, 3, 1, 1);
             // Location scores Sad and Anger.
-            recordingGrid.add(new UpdatingLabel(wrapper1), 0, 1, 4, 1);
-            recordingGrid.add(new UpdatingLabel(wrapper2), 0, 6, 1, 1);
+            recordingGrid.add(new UpdatingLabel(wrapper1), 0, 6, 1, 1);
+            recordingGrid.add(new UpdatingLabel(wrapper2), 0, 1, 4, 1);
+
 
             Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
             for (int row = 2; iterator.hasNext(); row++) {
