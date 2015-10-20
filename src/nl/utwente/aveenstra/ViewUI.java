@@ -235,7 +235,7 @@ public class ViewUI extends Application implements View {
         Main.PREFERENCES.put(Main.AUTHOR, author.getText());
         Main.PREFERENCES.put(Main.DIRECTORY, directory.getText());
         Main.setrNumber(rNumber.getText());
-
+        Main.PREFERENCES.put(Main.FILMDATE, filmdate.getText());
         JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord, updateView);
     }
 
