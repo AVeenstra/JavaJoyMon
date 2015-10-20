@@ -36,16 +36,18 @@ public class ComponentWrapper {
     private String name;
     private int inverse;
 
+    // Scores of the X axis.
     public ComponentWrapper(String name, int i) {
-        this(name, i, false, 5);
+        this(name, i, false, 500);
     }
 
     public ComponentWrapper(String name, int i, boolean isButton) {
         this(name, i, isButton, 1);
     }
 
+    // Scores of the Y axes.
     public ComponentWrapper(String name, int i, int inverse) {
-        this(name, i, false, inverse * 5);
+        this(name, i, false, inverse * 500);
     }
 
     public ComponentWrapper(String name, int i, boolean isButton, int inverse) {

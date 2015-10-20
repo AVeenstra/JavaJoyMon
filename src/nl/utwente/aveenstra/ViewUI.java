@@ -38,6 +38,7 @@ public class ViewUI extends Application implements View {
     private TextField author;
     private TextField directory;
     private TextField rNumber;
+    private TextField filmdate;
     private Button okButton;
     private TabPane tabPane;
     private Tab configurationTab;
@@ -126,13 +127,14 @@ public class ViewUI extends Application implements View {
 
         ComponentWrapper wrapper1 = ComponentWrapper.axes.get(axes1);
         ComponentWrapper wrapper2 = ComponentWrapper.axes.get(axes2);
+
 // Axes Sad and Anger
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 5, 1), new NumberAxis(0, 5, 1), data);
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 500, 100), new NumberAxis(0, 500, 100), data);
         wrapper1.addUpdateFunction(chart::setXValue);
         wrapper2.addUpdateFunction(chart::setYValue);
 
         //      chart.set(wrapper1.getName());
-        BorderPane chartPane = new BorderPane(chart, null, null, new UpdatingLabel(wrapper1), new UpdatingLabel(wrapper2));
+        BorderPane chartPane = new BorderPane(chart);
         if (main) {
             okButton = new Button("OK");
             okButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -159,6 +161,7 @@ public class ViewUI extends Application implements View {
                 }
             });
 
+// Start menu.
             GridPane gridPane = new GridPane();
             gridPane.setHgap(5);
             gridPane.setVgap(5);
@@ -169,22 +172,30 @@ public class ViewUI extends Application implements View {
             gridPane.add(directoryButton, 2, 1);
             gridPane.add(new Label("R number:"), 0, 2);
             gridPane.add(rNumber = new TextField(), 1, 2, 2, 1);
-            gridPane.add(okButton, 0, 3, 3, 1);
+            gridPane.add(new Label("Film date:"), 0, 3, 3, 1);
+            gridPane.add(filmdate = new TextField(), 1, 3, 2, 1);
+            gridPane.add(okButton, 0, 4, 3, 1);
 
             ConfigChangeHandler changeHandler = new ConfigChangeHandler();
             author.setOnKeyReleased(changeHandler);
             directory.setOnKeyReleased(changeHandler);
             rNumber.setOnKeyReleased(changeHandler);
+            filmdate.setOnKeyReleased(changeHandler);
 
             configurationTab = new Tab("Configuration");
             configurationTab.setClosable(false);
             configurationTab.setContent(gridPane);
 
+// Chart Sad and Anger
             GridPane recordingGrid = new GridPane();
-            recordingGrid.add(state = new Label("Ready to record"), 0,0,4,1);
-            recordingGrid.add(chartPane, 0, 3, 4, 1);
-            recordingGrid.add(new Label(wrapper1.getName()), 4, 5, 1, 1);
+            recordingGrid.add(state = new Label("Ready to record"), 0, 0, 4, 1);
+            recordingGrid.add(chartPane, 2, 3, 4, 1);
+            // Location name axes.
+            recordingGrid.add(new Label(wrapper1.getName()), 6, 5, 1, 1);
             recordingGrid.add(new Label(wrapper2.getName()), 0, 3, 1, 1);
+            // Location scores Sad and Anger.
+            recordingGrid.add(new UpdatingLabel(wrapper1), 0, 1, 4, 1);
+            recordingGrid.add(new UpdatingLabel(wrapper2), 0, 6, 1, 1);
 
             Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
             for (int row = 2; iterator.hasNext(); row++) {
@@ -224,6 +235,7 @@ public class ViewUI extends Application implements View {
         Main.PREFERENCES.put(Main.AUTHOR, author.getText());
         Main.PREFERENCES.put(Main.DIRECTORY, directory.getText());
         Main.setrNumber(rNumber.getText());
+
         JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord, updateView);
     }
 
@@ -235,8 +247,8 @@ public class ViewUI extends Application implements View {
         ComponentWrapper component = ComponentWrapper.axes.get(axes);
         ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.1, 0);
 
-// Contempt
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 0, 0), new NumberAxis(0, 5, 1), data);
+// Chart contempt
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 0, 0), new NumberAxis(0, 500, 100), data);
         component.addUpdateFunction(chart::setYValue);
         chart.setTitle(component.getName());
         return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
