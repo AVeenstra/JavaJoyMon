@@ -275,6 +275,7 @@ public class ViewUI extends Application implements View {
         return isLength;
     }
 
+    // Checks if every field from the start menu is filled correctly.
     public void checkConfiguration() {
         File folder = new File(directory.getText());
         boolean temp = author.getText().isEmpty() || (filmdate.getText().isEmpty() || checkDate(filmdate.getText()) == false) || !(folder.isDirectory() && folder.canWrite() && folder.canExecute()
