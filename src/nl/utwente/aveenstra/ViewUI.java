@@ -34,6 +34,9 @@ public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?[0-9]+$");
+    //   String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
+
+    public static final Pattern filmdatePattern = Pattern.compile("^\\d{2}-\\d{2}-\\d{4}$");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
@@ -255,9 +258,27 @@ public class ViewUI extends Application implements View {
         return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
     }
 
+    // Checks if date is the right pattern.
+    public boolean checkDate(String filmdate) {
+        boolean isDate = false;
+        String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
+        isDate = filmdate.matches(datePattern);
+        return isDate;
+    }
+
+    // Checks if length Rnumber is correct.
+    public boolean checklengthRnumber(String rNumber) {
+        boolean isLength = false;
+        if (rNumber.length() == 6) {
+            isLength = true;
+        }
+        return isLength;
+    }
+
     public void checkConfiguration() {
         File folder = new File(directory.getText());
-        boolean temp = author.getText().isEmpty() || !(folder.isDirectory() && folder.canWrite() && folder.canExecute() && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, Main.trimRNumber(rNumber.getText())).exists());
+        boolean temp = author.getText().isEmpty() || (filmdate.getText().isEmpty() || checkDate(filmdate.getText()) == false) || !(folder.isDirectory() && folder.canWrite() && folder.canExecute()
+                && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, Main.trimRNumber(rNumber.getText())).exists() && checklengthRnumber(Main.trimRNumber(rNumber.getText())) == true);
         Platform.runLater(new Thread() {
             @Override
             public void run() {
