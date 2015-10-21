@@ -192,21 +192,21 @@ public class ViewUI extends Application implements View {
 // Chart Sad and Anger
             GridPane recordingGrid = new GridPane();
             recordingGrid.add(state = new Label("Ready to record"), 0, 0, 4, 1);
-            recordingGrid.add(chartPane, 2, 3, 4, 1);
+            recordingGrid.add(chartPane, 2, 4, 4, 1);
             // Location name axes.
             recordingGrid.add(new Label(wrapper1.getName()), 6, 5, 1, 1);
-            recordingGrid.add(new Label(wrapper2.getName()), 0, 3, 1, 1);
+            recordingGrid.add(new Label(wrapper2.getName()), 0, 4, 1, 1);
             // Location scores Sad and Anger.
-            recordingGrid.add(new UpdatingLabel(wrapper1), 0, 6, 1, 1);
-            recordingGrid.add(new UpdatingLabel(wrapper2), 0, 1, 4, 1);
+            recordingGrid.add(new UpdatingLabel(wrapper1), 0, 5, 1, 1);
+            recordingGrid.add(new UpdatingLabel(wrapper2), 0, 3, 4, 1);
 
 
             Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
             for (int row = 2; iterator.hasNext(); row++) {
                 for (int column = 0; column < 4 && iterator.hasNext(); column += 2) {
                     ComponentWrapper tempWrapper = iterator.next();
-                    recordingGrid.add(new Label(tempWrapper.getName()), column, row + 3);
-                    recordingGrid.add(new UpdatingLabel(tempWrapper), column + 1, row + 3);
+                    recordingGrid.add(new Label(tempWrapper.getName()), column, row);
+                    recordingGrid.add(new UpdatingLabel(tempWrapper), column + 1, row);
                 }
             }
 
