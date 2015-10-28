@@ -34,10 +34,14 @@ public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?[0-9]+$");
+    //   String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
+
+    public static final Pattern filmdatePattern = Pattern.compile("^\\d{2}-\\d{2}-\\d{4}$");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
     private TextField rNumber;
+    private TextField filmdate;
     private Button okButton;
     private TabPane tabPane;
     private Tab configurationTab;
@@ -127,12 +131,13 @@ public class ViewUI extends Application implements View {
         ComponentWrapper wrapper1 = ComponentWrapper.axes.get(axes1);
         ComponentWrapper wrapper2 = ComponentWrapper.axes.get(axes2);
 
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1000, 200), new NumberAxis(0, 1000, 200), data);
+// Axes Sad and Anger
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 500, 100), new NumberAxis(0, 500, 100), data);
         wrapper1.addUpdateFunction(chart::setXValue);
         wrapper2.addUpdateFunction(chart::setYValue);
 
-        chart.setTitle(wrapper1.getName() + " - " + wrapper2.getName());
-        BorderPane chartPane = new BorderPane(chart, null, null, new UpdatingLabel(wrapper1), new UpdatingLabel(wrapper2));
+        //      chart.set(wrapper1.getName());
+        BorderPane chartPane = new BorderPane(chart);
         if (main) {
             okButton = new Button("OK");
             okButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -159,6 +164,7 @@ public class ViewUI extends Application implements View {
                 }
             });
 
+// Start menu.
             GridPane gridPane = new GridPane();
             gridPane.setHgap(5);
             gridPane.setVgap(5);
@@ -169,20 +175,31 @@ public class ViewUI extends Application implements View {
             gridPane.add(directoryButton, 2, 1);
             gridPane.add(new Label("R number:"), 0, 2);
             gridPane.add(rNumber = new TextField(), 1, 2, 2, 1);
-            gridPane.add(okButton, 0, 3, 3, 1);
+            gridPane.add(new Label("Film date:"), 0, 3, 3, 1);
+            gridPane.add(filmdate = new TextField(), 1, 3, 2, 1);
+            gridPane.add(okButton, 0, 4, 3, 1);
 
             ConfigChangeHandler changeHandler = new ConfigChangeHandler();
             author.setOnKeyReleased(changeHandler);
             directory.setOnKeyReleased(changeHandler);
             rNumber.setOnKeyReleased(changeHandler);
+            filmdate.setOnKeyReleased(changeHandler);
 
             configurationTab = new Tab("Configuration");
             configurationTab.setClosable(false);
             configurationTab.setContent(gridPane);
 
+// Chart Sad and Anger
             GridPane recordingGrid = new GridPane();
-            recordingGrid.add(state = new Label("Ready to record"), 0,0,4,1);
-            recordingGrid.add(chartPane, 0, 1, 4, 1);
+            recordingGrid.add(state = new Label("Ready to record"), 0, 0, 4, 1);
+            recordingGrid.add(chartPane, 2, 4, 4, 1);
+            // Location name axes.
+            recordingGrid.add(new Label(wrapper1.getName()), 6, 5, 1, 1);
+            recordingGrid.add(new Label(wrapper2.getName()), 0, 4, 1, 1);
+            // Location scores Sad and Anger.
+            recordingGrid.add(new UpdatingLabel(wrapper1), 0, 5, 1, 1);
+            recordingGrid.add(new UpdatingLabel(wrapper2), 0, 3, 4, 1);
+
 
             Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
             for (int row = 2; iterator.hasNext(); row++) {
@@ -222,6 +239,7 @@ public class ViewUI extends Application implements View {
         Main.PREFERENCES.put(Main.AUTHOR, author.getText());
         Main.PREFERENCES.put(Main.DIRECTORY, directory.getText());
         Main.setrNumber(rNumber.getText());
+        Main.PREFERENCES.put(Main.FILMDATE, filmdate.getText());
         JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord, updateView);
     }
 
@@ -231,17 +249,37 @@ public class ViewUI extends Application implements View {
 
     private Scene createWindowOneAxes(int axes) {
         ComponentWrapper component = ComponentWrapper.axes.get(axes);
-        ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.5, 0);
+        ScatterChart.Data<Number, Number> data = new ScatterChart.Data<>(0.1, 0);
 
-        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 1, 1), new NumberAxis(0, 5, 1), data);
+// Chart contempt
+        UpdatingScatterChart chart = new UpdatingScatterChart(new NumberAxis(0, 0, 0), new NumberAxis(0, 500, 100), data);
         component.addUpdateFunction(chart::setYValue);
         chart.setTitle(component.getName());
         return new Scene(new BorderPane(chart, null, null, new UpdatingLabel(component), null), 150, 500);
     }
 
+    // Checks if date is the right pattern.
+    public boolean checkDate(String filmdate) {
+        boolean isDate = false;
+        String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
+        isDate = filmdate.matches(datePattern);
+        return isDate;
+    }
+
+    // Checks if length Rnumber is correct.
+    public boolean checklengthRnumber(String rNumber) {
+        boolean isLength = false;
+        if (rNumber.length() == 6) {
+            isLength = true;
+        }
+        return isLength;
+    }
+
+    // Checks if every field from the start menu is filled correctly.
     public void checkConfiguration() {
         File folder = new File(directory.getText());
-        boolean temp = author.getText().isEmpty() || !(folder.isDirectory() && folder.canWrite() && folder.canExecute() && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, Main.trimRNumber(rNumber.getText())).exists());
+        boolean temp = author.getText().isEmpty() || (filmdate.getText().isEmpty() || checkDate(filmdate.getText()) == false) || !(folder.isDirectory() && folder.canWrite() && folder.canExecute()
+                && folder.canRead() && rNumberPattern.matcher(rNumber.getText()).find() && !CyberballRecording.buildPath(folder, Main.trimRNumber(rNumber.getText())).exists() && checklengthRnumber(Main.trimRNumber(rNumber.getText())) == true);
         Platform.runLater(new Thread() {
             @Override
             public void run() {
