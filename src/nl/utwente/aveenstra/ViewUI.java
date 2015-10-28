@@ -48,6 +48,7 @@ public class ViewUI extends Application implements View {
     private Tab recordingTab;
     private Stage primaryStage;
     private Label state;
+    private Label LabelrNumber;
 
     public ViewUI() {
         super();
@@ -200,6 +201,7 @@ public class ViewUI extends Application implements View {
             recordingGrid.add(new UpdatingLabel(wrapper1), 0, 5, 1, 1);
             recordingGrid.add(new UpdatingLabel(wrapper2), 0, 3, 4, 1);
 
+            recordingGrid.add(LabelrNumber = new Label(), 6, 0, 4, 1 );
 
             Iterator<ComponentWrapper> iterator = ComponentWrapper.buttons.iterator();
             for (int row = 2; iterator.hasNext(); row++) {
@@ -239,6 +241,7 @@ public class ViewUI extends Application implements View {
         Main.PREFERENCES.put(Main.AUTHOR, author.getText());
         Main.PREFERENCES.put(Main.DIRECTORY, directory.getText());
         Main.setrNumber(rNumber.getText());
+        LabelrNumber.setText('R' + Main.getrNumber());
         Main.PREFERENCES.put(Main.FILMDATE, filmdate.getText());
         JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord, updateView);
     }
