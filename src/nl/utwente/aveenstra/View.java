@@ -18,7 +18,11 @@ public interface View extends Observer {
         }
     }
 
+    default int getPressingButton() {
+        return 1;
+    }
     default int getUnderstood() {
         return 1;
     }
+
 }

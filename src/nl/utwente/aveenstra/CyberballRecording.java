@@ -38,8 +38,9 @@ public class CyberballRecording implements Observer {
             sheet.addCell(new Label(2, 0, "scoring date"));
             sheet.addCell(new DateTime(2,1,new Date()));
             sheet.addCell(new Label(3, 0, "Child understood"));
-            sheet.addCell(new Label(4, 0, "Film date"));
-            sheet.addCell(new Label(4, 1, Main.PREFERENCES.get(Main.FILMDATE, null)));
+            sheet.addCell(new Label(4, 0, "Pressing buttons until end"));
+            sheet.addCell(new Label(5, 0, "Film date"));
+            sheet.addCell(new Label(5, 1, Main.PREFERENCES.get(Main.FILMDATE, null)));
 
             sheet.addCell(new Label(0, 3, "Time"));
             for (int i = 1; i < ComponentWrapper.componentWrappers.length; i++) {
@@ -86,6 +87,7 @@ public class CyberballRecording implements Observer {
         JoystickWrapper.getInstance().deleteObserver(this);
         try {
             sheet.addCell(new Number(3, 1, Main.getView().getUnderstood()));
+            sheet.addCell(new Number(4, 1, Main.getView().getPressingButton()));
             workbook.write();
             workbook.close();
         } catch (IOException | WriteException e) {
