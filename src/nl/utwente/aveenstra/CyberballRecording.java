@@ -41,6 +41,8 @@ public class CyberballRecording implements Observer {
             sheet.addCell(new Label(4, 0, "Pressing buttons until end"));
             sheet.addCell(new Label(5, 0, "Film date"));
             sheet.addCell(new Label(5, 1, Main.PREFERENCES.get(Main.FILMDATE, null)));
+            sheet.addCell(new Label(6, 0, "Tic"));
+
 
             sheet.addCell(new Label(0, 3, "Time"));
             for (int i = 1; i < ComponentWrapper.componentWrappers.length; i++) {
@@ -88,6 +90,7 @@ public class CyberballRecording implements Observer {
         try {
             sheet.addCell(new Number(3, 1, Main.getView().getUnderstood()));
             sheet.addCell(new Number(4, 1, Main.getView().getPressingButton()));
+            sheet.addCell(new Number(6, 1, Main.getView().getTic()));
             workbook.write();
             workbook.close();
         } catch (IOException | WriteException e) {

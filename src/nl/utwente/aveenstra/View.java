@@ -25,4 +25,7 @@ public interface View extends Observer {
         return 1;
     }
 
+    default int getTic() {
+        return 1;
+    }
 }
