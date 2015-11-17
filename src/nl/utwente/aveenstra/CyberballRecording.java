@@ -88,9 +88,9 @@ public class CyberballRecording implements Observer {
     public void close() {
         JoystickWrapper.getInstance().deleteObserver(this);
         try {
+            sheet.addCell(new Number(6, 1, Main.getView().getTic()));
             sheet.addCell(new Number(3, 1, Main.getView().getUnderstood()));
             sheet.addCell(new Number(4, 1, Main.getView().getPressingButton()));
-            sheet.addCell(new Number(6, 1, Main.getView().getTic()));
             workbook.write();
             workbook.close();
         } catch (IOException | WriteException e) {

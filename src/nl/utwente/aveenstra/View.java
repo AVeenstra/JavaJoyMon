@@ -18,6 +18,9 @@ public interface View extends Observer {
         }
     }
 
+    default int getTic() {
+        return 1;
+    }
     default int getPressingButton() {
         return 1;
     }
@@ -25,7 +28,4 @@ public interface View extends Observer {
         return 1;
     }
 
-    default int getTic() {
-        return 1;
-    }
 }
