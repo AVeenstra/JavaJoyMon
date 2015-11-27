@@ -33,10 +33,8 @@ import java.util.regex.Pattern;
 public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
-    public static final Pattern rNumberPattern = Pattern.compile("^[rR]?[0-9]+$");
-    //   String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
-
-    public static final Pattern filmdatePattern = Pattern.compile("(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)");
+    public static final Pattern rNumberPattern = Pattern.compile("^[rR]?(1[1-3])|(2000)[0-9]+$");
+    public static final Pattern filmdatePattern = Pattern.compile("(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((19|20)\\d\\d)");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
