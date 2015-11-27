@@ -34,7 +34,6 @@ public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?(1[1-3])|(2000)[0-9]+$");
-    public static final Pattern filmdatePattern = Pattern.compile("(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-((19|20)\\d\\d)");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
@@ -290,6 +289,7 @@ public class ViewUI extends Application implements View {
         });
     }
 
+    // Question about tic after ending recording
     public int getTic() {
         while (true) {
             BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
@@ -302,6 +302,7 @@ public class ViewUI extends Application implements View {
         }
     }
 
+    // Question, whether the child understood the task, after ending recording
     public int getUnderstood() {
         while (true) {
             BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
@@ -314,6 +315,7 @@ public class ViewUI extends Application implements View {
         }
     }
 
+    // Question, whether the child understood the task, after ending recording (only if the child didn't understand the test
     public int getPressingButton() {
         while (true) {
             BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
