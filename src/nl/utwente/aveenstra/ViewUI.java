@@ -36,7 +36,7 @@ public class ViewUI extends Application implements View {
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?[0-9]+$");
     //   String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
 
-    public static final Pattern filmdatePattern = Pattern.compile("^\\d{2}-\\d{2}-\\d{4}$");
+    public static final Pattern filmdatePattern = Pattern.compile("(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)");
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
@@ -264,7 +264,7 @@ public class ViewUI extends Application implements View {
     // Checks if date is the right pattern.
     public boolean checkDate(String filmdate) {
         boolean isDate = false;
-        String datePattern = "\\d{1,2}-\\d{1,2}-\\d{4}";
+        String datePattern = "(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-(201[2-5])";
         isDate = filmdate.matches(datePattern);
         return isDate;
     }
@@ -327,7 +327,6 @@ public class ViewUI extends Application implements View {
             }
         }
     }
-
 
     public class UpdatingScatterChart extends ScatterChart<Number, Number> {
         private ScatterChart.Data<Number, Number> point;
