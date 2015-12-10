@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jfx.messagebox.MessageBox;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
+
 
 /**
  * Created by antoine on 02/08/15.
@@ -46,6 +48,7 @@ public class ViewUI extends Application implements View {
     private Stage primaryStage;
     private Label state;
     private Label LabelrNumber;
+
 
     public ViewUI() {
         super();
@@ -162,6 +165,23 @@ public class ViewUI extends Application implements View {
                 }
             });
 
+
+            Button filenameButton = new Button("Choose file");
+
+            filenameButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+
+                public void handle(ActionEvent event) {
+                    JFileChooser filechooser = new JFileChooser();
+
+                    filechooser.showSaveDialog(null);
+
+                    rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
+                    filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
+
+                }
+            });
+
 // Start menu.
             GridPane gridPane = new GridPane();
             gridPane.setHgap(5);
@@ -172,7 +192,8 @@ public class ViewUI extends Application implements View {
             gridPane.add(directory = new TextField(Main.PREFERENCES.get(Main.DIRECTORY, "")), 1, 1);
             gridPane.add(directoryButton, 2, 1);
             gridPane.add(new Label("R number:"), 0, 2);
-            gridPane.add(rNumber = new TextField(), 1, 2, 2, 1);
+            gridPane.add(rNumber = new TextField(), 1, 2);
+            gridPane.add(filenameButton, 2, 2);
             gridPane.add(new Label("Film date:"), 0, 3, 3, 1);
             gridPane.add(filmdate = new TextField(), 1, 3, 2, 1);
             gridPane.add(okButton, 0, 4, 3, 1);
@@ -186,6 +207,7 @@ public class ViewUI extends Application implements View {
             configurationTab = new Tab("Configuration");
             configurationTab.setClosable(false);
             configurationTab.setContent(gridPane);
+
 
 // Chart Sad and Anger
             GridPane recordingGrid = new GridPane();
