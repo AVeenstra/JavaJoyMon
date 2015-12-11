@@ -174,7 +174,7 @@ public class ViewUI extends Application implements View {
                 public void handle(ActionEvent event) {
                     JFileChooser filechooser = new JFileChooser();
 
-                    filechooser.showSaveDialog(null);
+                    filechooser.showOpenDialog(null);
 
                     rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
                     filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
