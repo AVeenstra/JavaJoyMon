@@ -172,23 +172,12 @@ public class ViewUI extends Application implements View {
                 @Override
 
                 public void handle(ActionEvent event) {
-
-
                     File file = new File(directory.getText().substring(0, directory.getText().length() - 7));
                     JFileChooser filechooser = new JFileChooser(file);
-
-
                     if (filechooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-
-                        File file1 = filechooser.getSelectedFile();
-                        // load from file
+                        rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
+                        filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
                     }
-
-                    //filechooser.showOpenDialog(null);
-
-                    rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
-                    filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
-
                 }
             });
 
