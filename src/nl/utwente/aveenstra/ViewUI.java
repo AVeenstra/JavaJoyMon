@@ -148,10 +148,12 @@ public class ViewUI extends Application implements View {
                 }
             });
 
+            // Button to choose the path
             Button directoryButton = new Button("Choose directory");
             directoryButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+
                     DirectoryChooser chooser = new DirectoryChooser();
                     chooser.setTitle("Directory to save the files to");
                     File file = new File(directory.getText());
@@ -165,12 +167,10 @@ public class ViewUI extends Application implements View {
                 }
             });
 
-
+            // Button to choose the file, the Rnumber and date are extracted from the file name
             Button filenameButton = new Button("Choose file");
-
             filenameButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-
                 public void handle(ActionEvent event) {
                     File file = new File(directory.getText().substring(0, directory.getText().length() - 7));
                     JFileChooser filechooser = new JFileChooser(file);
