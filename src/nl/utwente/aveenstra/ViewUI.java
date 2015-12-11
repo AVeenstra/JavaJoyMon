@@ -174,7 +174,7 @@ public class ViewUI extends Application implements View {
                 public void handle(ActionEvent event) {
 
 
-                    File file = new File(directory.getText().substring(0, directory.getText().length() - 5));
+                    File file = new File(directory.getText().substring(0, directory.getText().length() - 7));
                     JFileChooser filechooser = new JFileChooser(file);
 
 
