@@ -177,6 +177,7 @@ public class ViewUI extends Application implements View {
                     if (filechooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                         rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
                         filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
+
                     }
                 }
             });
