@@ -17,6 +17,7 @@ import java.util.Observer;
  */
 public class CyberballRecording implements Observer {
 
+    public static int MULTIPLIER = 1000;
     private long startTime;
     private WritableWorkbook workbook;
     private WritableSheet sheet;
@@ -40,7 +41,7 @@ public class CyberballRecording implements Observer {
             sheet.addCell(new Label(3, 0, "Child understood"));
             sheet.addCell(new Label(4, 0, "Pressing buttons until end"));
             sheet.addCell(new Label(5, 0, "Film date"));
-            sheet.addCell(new Label(5, 1, Main.PREFERENCES.get(Main.FILMDATE, null)));
+            sheet.addCell(new Label(5, 1, Main.getFilmDate()));
             sheet.addCell(new Label(6, 0, "Tic"));
 
 
@@ -55,7 +56,7 @@ public class CyberballRecording implements Observer {
     }
 
     public static File buildPath() {
-        return buildPath(new File(Main.PREFERENCES.get(Main.DIRECTORY, null)), Main.getrNumber());
+        return buildPath(new File(Main.PREFERENCES.get(Main.OUTPUT_DIR, null)), Main.getrNumber());
     }
 
     public static File buildPath(File folder, String rNumber) {
@@ -72,10 +73,11 @@ public class CyberballRecording implements Observer {
             try {
                 sheet.addCell(new Number(0, row, (System.currentTimeMillis() - startTime) / 1000.0));
                 for (int i = 1; i < ComponentWrapper.componentWrappers.length; i++) {
+                    float average = ComponentWrapper.componentWrappers[i].getAverage() * MULTIPLIER;
                     if (ComponentWrapper.componentWrappers[i].isButton()) {
-                        sheet.addCell(new Number(i, row, Math.ceil(ComponentWrapper.componentWrappers[i].getAverage())));
+                        sheet.addCell(new Number(i, row, Math.ceil(average)));
                     } else {
-                        sheet.addCell(new Number(i, row, Math.max(0, ComponentWrapper.componentWrappers[i].getAverage())));
+                        sheet.addCell(new Number(i, row, Math.max(0, average)));
                     }
                 }
                 row++;

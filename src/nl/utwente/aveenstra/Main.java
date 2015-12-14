@@ -23,13 +23,12 @@ public class Main {
     public static final String AUTHOR = "author";
     public static final String CLI = "cli";
 
-    public static final String FILMDATE = "filmdate";
-
     /**
      * Key used for preferences
      */
-    public static final String DIRECTORY = "dir";
-    public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR, DIRECTORY};
+    public static final String OUTPUT_DIR = "outputdir";
+    public static final String INPUT_DIRECTORY = "inputdir";
+    public static final String[] CONFIG_KEYS_STRING = new String[]{AUTHOR, OUTPUT_DIR, INPUT_DIRECTORY};
     public static final String[] CONFIG_KEYS_BOOLEAN = new String[]{CLI};
     public static final String CONFIG_NODE_NAME = "JavaJoyMon";
     public static final Preferences PREFERENCES = Preferences.userRoot().node(CONFIG_NODE_NAME);
@@ -40,12 +39,15 @@ public class Main {
     public static Options options = new Options();
     private static View view;
     private static String rNumber = "";
+    private static String filmDate = "";
     private static boolean running = true;
 
     static {
         options.addOption(AUTHOR.charAt(0)+"", AUTHOR, true, "Set the name of the author of the results");
         options.addOption(CLI.charAt(0)+"", CLI, false, "Do not open a UI, but instead start a CLI.");
-        options.addOption(DIRECTORY.charAt(0)+"", DIRECTORY, true, "Set the root directory for the results.");
+        options.addOption(OUTPUT_DIR.charAt(0) + "", OUTPUT_DIR, true, "Set the root directory for the results.");
+        options.addOption(INPUT_DIRECTORY.charAt(0) + "", INPUT_DIRECTORY, true, "Set the root directory for the results.");
+        options.addOption("n", "n", false, "Do not search for a controller.");
         options.addOption("h", "help", false, "Prints this help message.");
     }
 
@@ -79,17 +81,25 @@ public class Main {
                     }
                 }
 
-                JoystickWrapper joystick = JoystickWrapper.getInstance();
-                joystickThread = new Thread(joystick, "Joystick Thread");
-                if (PREFERENCES.getBoolean(CLI, false)) {
-                    view = new ViewCLI();
+                if (!line.hasOption('n')) {
+                    JoystickWrapper joystick = JoystickWrapper.getInstance();
+                    joystickThread = new Thread(joystick, "Joystick Thread");
+                    if (PREFERENCES.getBoolean(CLI, false)) {
+                        view = new ViewCLI();
+                    } else {
+                        view = new ViewUI();
+                    }
+                    joystickThread.start();
+                    view.run();
+                    stopRunning();
+                    joystickThread.join();
                 } else {
-                    view = new ViewUI();
+                    if (PREFERENCES.getBoolean(CLI, false)) {
+                        view = new ViewCLI();
+                    } else {
+                        view = new ViewUI();
+                    }
                 }
-                joystickThread.start();
-                view.run();
-                stopRunning();
-                joystickThread.join();
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
@@ -125,6 +135,14 @@ public class Main {
 
     public static void setrNumber(String rNumber) {
         Main.rNumber = trimRNumber(rNumber);
+    }
+
+    public static String getFilmDate() {
+        return filmDate;
+    }
+
+    public static void setFilmDate(String date) {
+        filmDate = date;
     }
 
     public static String trimRNumber(String rNumber){

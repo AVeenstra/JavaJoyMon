@@ -10,7 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -20,7 +23,9 @@ import javafx.stage.WindowEvent;
 import jfx.messagebox.MessageBox;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
@@ -36,6 +41,7 @@ public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?(1[1-3])|(2000)[0-9]+$");
+
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
     private TextField directory;
@@ -172,12 +178,16 @@ public class ViewUI extends Application implements View {
             filenameButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    File file = new File(directory.getText().substring(0, directory.getText().length() - 7));
+                    File file = new File(directory.getText()).getParentFile();
                     JFileChooser filechooser = new JFileChooser(file);
                     if (filechooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                         rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
                         filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
-
+                        try {
+                            Desktop.getDesktop().open(filechooser.getSelectedFile().getAbsoluteFile());
+                        } catch (IOException e) {
+                            MessageBox.show(null, "Could not open file.", String.format("Error opening \"%s\"", filechooser.getSelectedFile().getAbsolutePath()), MessageBox.OK);
+                        }
                     }
                 }
             });
@@ -189,7 +199,7 @@ public class ViewUI extends Application implements View {
             gridPane.add(new Label("Author:"), 0, 0);
             gridPane.add(author = new TextField(Main.PREFERENCES.get(Main.AUTHOR, "")), 1, 0, 2, 1);
             gridPane.add(new Label("Directory:"), 0, 1);
-            gridPane.add(directory = new TextField(Main.PREFERENCES.get(Main.DIRECTORY, "")), 1, 1);
+            gridPane.add(directory = new TextField(Main.PREFERENCES.get(Main.OUTPUT_DIR, "")), 1, 1);
             gridPane.add(directoryButton, 2, 1);
             gridPane.add(new Label("R number:"), 0, 2);
             gridPane.add(rNumber = new TextField(), 1, 2);
@@ -258,10 +268,10 @@ public class ViewUI extends Application implements View {
 
     private void setReadyToRecord(boolean updateView) {
         Main.PREFERENCES.put(Main.AUTHOR, author.getText());
-        Main.PREFERENCES.put(Main.DIRECTORY, directory.getText());
+        Main.PREFERENCES.put(Main.OUTPUT_DIR, directory.getText());
         Main.setrNumber(rNumber.getText());
         LabelrNumber.setText('R' + Main.getrNumber());
-        Main.PREFERENCES.put(Main.FILMDATE, filmdate.getText());
+        Main.setFilmDate(filmdate.getText());
         JoystickWrapper.getInstance().setCurrentState(JoystickWrapper.State.ReadyToRecord, updateView);
     }
 
