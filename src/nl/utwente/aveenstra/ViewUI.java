@@ -42,7 +42,7 @@ public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?(1[1-3])|(2000)[0-9]+$");
-    public static final Pattern videoButtonPattern = Pattern.compile("^Webcam_R(?<rnumber>\\d{6})_(?<datum>\\d{2}-\\d{2}-\\d{2})\\.MPEG$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern videoButtonPattern = Pattern.compile("^Webcam_R(?<rnumber>\\d{6})_(?<datum>\\d{2}-\\d{2}-\\d{4})\\.MPEG$", Pattern.CASE_INSENSITIVE);
 
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
