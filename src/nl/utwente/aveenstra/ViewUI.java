@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -41,6 +42,7 @@ public class ViewUI extends Application implements View {
     public static final String readyToRecordString = "Ready to record";
     public static final String recordingString = "Recording";
     public static final Pattern rNumberPattern = Pattern.compile("^[rR]?(1[1-3])|(2000)[0-9]+$");
+    public static final Pattern videoButtonPattern = Pattern.compile("^Webcam_R(?<rnumber>\\d)_(?<datum>\\d\\d-\\d\\d-\\d\\d)+\\.MPEG$", Pattern.CASE_INSENSITIVE);
 
     public ArrayList<UpdatingScatterChart> charts = new ArrayList<>();
     private TextField author;
@@ -181,12 +183,17 @@ public class ViewUI extends Application implements View {
                     File file = new File(directory.getText()).getParentFile();
                     JFileChooser filechooser = new JFileChooser(file);
                     if (filechooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        rNumber.setText(filechooser.getSelectedFile().getName().substring(7, 14));
-                        filmdate.setText(filechooser.getSelectedFile().getName().substring(15, 25));
-                        try {
-                            Desktop.getDesktop().open(filechooser.getSelectedFile().getAbsoluteFile());
-                        } catch (IOException e) {
-                            MessageBox.show(null, "Could not open file.", String.format("Error opening \"%s\"", filechooser.getSelectedFile().getAbsolutePath()), MessageBox.OK);
+                        Matcher matcher = videoButtonPattern.matcher(filechooser.getSelectedFile().getName());
+                        if (matcher.find()) {
+                            rNumber.setText(matcher.group("rnumber"));
+                            filmdate.setText(matcher.group("datum"));
+                            try {
+                                Desktop.getDesktop().open(filechooser.getSelectedFile().getAbsoluteFile());
+                            } catch (IOException e) {
+                                MessageBox.show(null, "Could not open file.", String.format("Error opening \"%s\".", filechooser.getSelectedFile().getAbsolutePath()), MessageBox.OK);
+                            }
+                        } else {
+                            MessageBox.show(null, "Incorrect file.", String.format("Error opening \"%s\".", filechooser.getSelectedFile().getAbsolutePath()), MessageBox.OK);
                         }
                     }
                 }
