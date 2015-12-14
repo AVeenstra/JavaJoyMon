@@ -183,7 +183,6 @@ public class ViewUI extends Application implements View {
                     File file = new File(directory.getText()).getParentFile();
                     JFileChooser filechooser = new JFileChooser(file);
                     if (filechooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        System.out.println(filechooser.getSelectedFile().getName());
                         Matcher matcher = videoButtonPattern.matcher(filechooser.getSelectedFile().getName());
                         if (matcher.find()) {
                             rNumber.setText(matcher.group("rnumber"));

@@ -17,7 +17,7 @@ import java.util.Observer;
  */
 public class CyberballRecording implements Observer {
 
-    public static int MULTIPLIER = 1000;
+    // public static int MULTIPLIER = 1000;
     private long startTime;
     private WritableWorkbook workbook;
     private WritableSheet sheet;
@@ -73,7 +73,7 @@ public class CyberballRecording implements Observer {
             try {
                 sheet.addCell(new Number(0, row, (System.currentTimeMillis() - startTime) / 1000.0));
                 for (int i = 1; i < ComponentWrapper.componentWrappers.length; i++) {
-                    float average = ComponentWrapper.componentWrappers[i].getAverage() * MULTIPLIER;
+                    float average = ComponentWrapper.componentWrappers[i].getAverage();
                     if (ComponentWrapper.componentWrappers[i].isButton()) {
                         sheet.addCell(new Number(i, row, Math.ceil(average)));
                     } else {
