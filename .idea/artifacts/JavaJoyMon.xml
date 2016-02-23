@@ -11,10 +11,9 @@
         <element id="extracted-dir" path="$PROJECT_DIR$/jfxmessagebox-1.1.0.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$PROJECT_DIR$/jinput.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$PROJECT_DIR$/jxl.jar" path-in-jar="/" />
-      </element>
-      <element id="directory" name="lib">
         <element id="dir-copy" path="$PROJECT_DIR$/lib" />
       </element>
+      <element id="directory" name="lib" />
     </root>
   </artifact>
 </component>
