@@ -38,7 +38,7 @@ public class CyberballRecording implements Observer {
             sheet.addCell(new Label(1, 1, Main.PREFERENCES.get(Main.AUTHOR, null)));
             sheet.addCell(new Label(2, 0, "scoring date"));
             sheet.addCell(new DateTime(2,1,new Date()));
-            sheet.addCell(new Label(3, 0, "Child_Press_Buttons_from_the_beginning"));
+            sheet.addCell(new Label(3, 0, "Child_Press_Buttons_at_the_beginning"));
             sheet.addCell(new Label(4, 0, "Pressing_buttons_until_end"));
             sheet.addCell(new Label(5, 0, "Film_date"));
             sheet.addCell(new Label(5, 1, Main.getFilmDate()));
