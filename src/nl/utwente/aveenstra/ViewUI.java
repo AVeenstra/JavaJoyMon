@@ -345,7 +345,7 @@ public class ViewUI extends Application implements View {
     public int getUnderstood() {
         while (true) {
             BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
-            Platform.runLater(() -> queue.add(MessageBox.show(primaryStage, "Did the child understand the test?", "Finalising the test", MessageBox.YES | MessageBox.NO) == MessageBox.YES ? 2 : 1));
+            Platform.runLater(() -> queue.add(MessageBox.show(primaryStage, "Did the child press buttons at the beginning of the test?", "Finalising the test", MessageBox.YES | MessageBox.NO) == MessageBox.YES ? 2 : 1));
             try {
                 return queue.take();
             } catch (InterruptedException e) {

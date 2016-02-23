@@ -32,15 +32,15 @@ public class CyberballRecording implements Observer {
         workbook = jxl.Workbook.createWorkbook(file);
         sheet = workbook.createSheet('R' + Main.getrNumber(), 0);
         try {
-            sheet.addCell(new Label(0, 0, "R nummer"));
+            sheet.addCell(new Label(0, 0, "Rnummer"));
             sheet.addCell(new Label(0, 1, 'R' + Main.getrNumber()));
             sheet.addCell(new Label(1, 0, "Author"));
             sheet.addCell(new Label(1, 1, Main.PREFERENCES.get(Main.AUTHOR, null)));
             sheet.addCell(new Label(2, 0, "scoring date"));
             sheet.addCell(new DateTime(2,1,new Date()));
-            sheet.addCell(new Label(3, 0, "Child understood"));
-            sheet.addCell(new Label(4, 0, "Pressing buttons until end"));
-            sheet.addCell(new Label(5, 0, "Film date"));
+            sheet.addCell(new Label(3, 0, "Child_Press_Buttons_from_the_beginning"));
+            sheet.addCell(new Label(4, 0, "Pressing_buttons_until_end"));
+            sheet.addCell(new Label(5, 0, "Film_date"));
             sheet.addCell(new Label(5, 1, Main.getFilmDate()));
             sheet.addCell(new Label(6, 0, "Tic"));
 
