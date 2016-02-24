@@ -92,7 +92,7 @@ public class CyberballRecording implements Observer {
         try {
             sheet.addCell(new Number(6, 1, Main.getView().getTic()));
             //sheet.addCell(new Number(3, 1, Main.getView().getUnderstood()));
-            if (Main.getView().getUnderstood() == 1) {
+            if (Main.getView().getUnderstood() == 2) {
                 sheet.addCell(new Number(3, 1, 1));
                 sheet.addCell(new Number(4, 1, Main.getView().getPressingButton()));
             } else {
